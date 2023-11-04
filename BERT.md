@@ -56,3 +56,17 @@ classDiagram
 
   Module <|-- BertEncoder
 ```
+
+## BertPooler
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertPooler[".models.bert.BertPooler"] {
+    +torch.nn.Linear dense
+    +torch.nn.Tanh activation
+  }
+
+  Module <|-- BertPooler
+```
+
