@@ -24,3 +24,20 @@ classDiagram
   PreTrainedModel <|-- BertPreTrainedModel
   BertPreTrainedModel <|-- BertModel
 ```
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertEmbeddings[".models.bert.BertEmbeddings"] {
+    +torch.nn.Embedding word_embeddings
+    +torch.nn.Embedding position_embeddings
+    +torch.nn.Embedding token_type_embeddings
+    +torch.nn.LayerNorm LayerNorm
+    +torch.nn.Dropout dropout
+  }
+
+  Module <|-- BertEmbeddings
+```
+
+LayerNorm は Tensorflow の Checkpoint File から Model の変数を Load できるように Camel Case になっているらしい.
+
