@@ -25,6 +25,8 @@ classDiagram
   BertPreTrainedModel <|-- BertModel
 ```
 
+## BertEmbeddings
+
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
@@ -41,3 +43,16 @@ classDiagram
 
 LayerNorm は Tensorflow の Checkpoint File から Model の変数を Load できるように Camel Case になっているらしい.
 
+## BertEncoder
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertEncoder[".models.bert.BertEncoder"] {
+    +BertConfig config
+    +torch.nn.ModuleList~BertLayer~ layer
+    +bool gradient_checkpointing
+  }
+
+  Module <|-- BertEncoder
+```
