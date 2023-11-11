@@ -112,7 +112,35 @@ classDiagram
 
 ### BertSelfAttention
 
-TODO: forward() について
+forward()
+
+```mermaid
+flowchart LR
+  hidden_states(hidden_states) --> key[torch.nn.Linear] --> cat_past_key[torch.cat] --> key_layer(key_layer)
+  past_key("past_key_value[0]") --> cat_past_key
+  hidden_states --> value[torch.nn.Linear] --> cat_past_value[torch.cat] --> value_layer(value_layer)
+  past_value("past_key_value[1]") --> cat_past_value
+  hidden_states --> query[torch.nn.Linear] --> query_layer(query_layer)
+  query_layer --> torch.matmul --> attention_scores(attention_scores)
+  key_layer --> torch.matmul
+```
+
+TODO: position_embedding_type
+
+```mermaid
+flowchart LR
+  attention_scores_0(attention_scores) --> div["/"] --> attention_scores_1(attention_scores)
+  sqrt_head_size("math.sqrt(self.attention_head_size)") --> div
+  attention_scores_1 --> add["+"] --> attention_scores_2(attention_scores)
+  attention_mask(attention_mask) --> add
+```
+
+```mermaid
+flowchart LR
+  attention_scores(attention_scores) --> torch.nn.functional.softmax --> torch.nn.Dropout --> attention_probs_0(attention_probs)
+  attention_probs_0 --> prod["*"] --> attention_probs_1(attention_probs)
+  head_mask(head_mask) --> prod
+```
 
 ## BertIntermediate
 
