@@ -120,7 +120,8 @@ TODO: forward() について
 classDiagram
   class Module["torch.nn.Module"]
   class BertIntermediate[".models.bert.BertIntermediate"] {
-    +int chunk_size_feed_forward
+    +torch.nn.Linear dense
+    +torch.nn.Module intermediate_act_fn
   }
 
   Module <|-- BertIntermediate
@@ -132,7 +133,9 @@ classDiagram
 classDiagram
   class Module["torch.nn.Module"]
   class BertOutput[".models.bert.BertOutput"] {
-    +int chunk_size_feed_forward
+    +torch.nn.Linear dense
+    +torch.nn.LayerNorm LayerNorm
+    +torch.nn.Dropout dropout
   }
 
   Module <|-- BertOutput
