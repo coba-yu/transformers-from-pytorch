@@ -57,6 +57,71 @@ classDiagram
   Module <|-- BertEncoder
 ```
 
+## BertLayer
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertLayer[".models.bert.BertLayer"] {
+    +int chunk_size_feed_forward
+    +int seq_len_dim
+    +BertAttention attention
+    +bool is_decoder
+    +bool add_cross_attention
+    +BertAttention crossattention
+    +BertIntermediate intermediate
+    +BertOutput output
+  }
+
+  Module <|-- BertLayer
+```
+
+## BertAttention
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertAttention[".models.bert.BertAttention"] {
+    +BertSelfAttention self
+    +BertSelfOutput output
+    +set pruned_heads 
+  }
+  class BertSelfAttention[".models.bert.BertSelfAttention"] {
+  }
+  class BertSelfOutput[".models.bert.BertSelfOutput"] {
+  }
+
+  BertSelfAttention -- BertAttention
+  BertSelfOutput -- BertAttention
+  Module <|-- BertAttention
+  Module <|-- BertSelfAttention
+  Module <|-- BertSelfOutput
+```
+
+## BertIntermediate
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertIntermediate[".models.bert.BertIntermediate"] {
+    +int chunk_size_feed_forward
+  }
+
+  Module <|-- BertIntermediate
+```
+
+## BertOutput
+
+```mermaid
+classDiagram
+  class Module["torch.nn.Module"]
+  class BertOutput[".models.bert.BertOutput"] {
+    +int chunk_size_feed_forward
+  }
+
+  Module <|-- BertOutput
+```
+
 ## BertPooler
 
 ```mermaid
