@@ -87,8 +87,20 @@ classDiagram
     +set pruned_heads 
   }
   class BertSelfAttention[".models.bert.BertSelfAttention"] {
+    +int num_attention_heads
+    +int attention_head_size
+    +int all_head_size
+    +torch.nn.Linear query
+    +torch.nn.Linear key
+    +torch.nn.Linear value
+    +torch.nn.Dropout dropout
+    +str position_embedding_type
+    +bool is_decoder
   }
   class BertSelfOutput[".models.bert.BertSelfOutput"] {
+    +torch.nn.Linear dense
+    +torch.nn.LayerNorm LayerNorm
+    +torch.nn.Dropout dropout
   }
 
   BertSelfAttention -- BertAttention
@@ -97,6 +109,10 @@ classDiagram
   Module <|-- BertSelfAttention
   Module <|-- BertSelfOutput
 ```
+
+### BertSelfAttention
+
+TODO: forward() について
 
 ## BertIntermediate
 
