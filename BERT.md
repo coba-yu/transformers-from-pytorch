@@ -76,6 +76,8 @@ classDiagram
 
 LayerNorm は Tensorflow の Checkpoint File から Model の変数を Load できるように Camel Case になっているらしい.
 
+> self.LayerNorm is not snake-cased to stick with TensorFlow model variable name and be able to load any TensorFlow checkpoint file
+
 ## BertEncoder
 
 ```mermaid
