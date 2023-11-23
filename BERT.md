@@ -7,7 +7,12 @@ classDiagram
   class GenerationMixin[".generation.GenerationMixin"]
   class PushToHubMixin[".utils.PushToHubMixin"]
   class PeftAdapterMixin[".integrations.PeftAdapterMixin"]
-  class PreTrainedModel[".modeling_utils.PreTrainedModel"]
+  class PreTrainedModel[".modeling_utils.PreTrainedModel"] {
+    +PretrainedConfig config
+    +str name_or_path
+    +dict warnings_issued
+    +GenerationConfig generation_config
+  }
   class BertPreTrainedModel[".models.bert.BertPreTrainedModel"]
   class BertModel[".models.bert.BertModel"] {
     +BertConfig config
