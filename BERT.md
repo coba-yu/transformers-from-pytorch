@@ -32,6 +32,29 @@ classDiagram
   BertPreTrainedModel <|-- BertModel
 ```
 
+### forward()
+
+https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models/bert/modeling_bert.py#L910-L1038
+
+- `input_ids` : `torch.LongTensor (batch_size, sequence_length)`
+- `inputs_embeds` : `torch.FloatTensor (batch_size, sequence_length, hidden_size)`
+
+のいずれかから `input_shape = (batch_size, sequence_length)`　 を決定します.
+
+```python
+        if input_ids is not None and inputs_embeds is not None:
+            raise ValueError("You cannot specify both input_ids and inputs_embeds at the same time")
+        elif input_ids is not None:
+            self.warn_if_padding_and_no_attention_mask(input_ids, attention_mask)
+            input_shape = input_ids.size()
+        elif inputs_embeds is not None:
+            input_shape = inputs_embeds.size()[:-1]
+        else:
+            raise ValueError("You have to specify either input_ids or inputs_embeds")
+
+        batch_size, seq_length = input_shape
+```
+
 ## BertConfig
 
 ```python
@@ -154,7 +177,7 @@ classDiagram
 
 ### BertSelfAttention
 
-forward()
+#### forward()
 
 ```mermaid
 flowchart LR
