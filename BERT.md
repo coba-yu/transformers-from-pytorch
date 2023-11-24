@@ -38,8 +38,8 @@ https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models
 
 #### input_shape
 
-- `input_ids` : `LongTensor (batch_size, sequence_length)`
-- `inputs_embeds` : `FloatTensor (batch_size, sequence_length, hidden_size)`
+- `input_ids` : Sequence に含まれる Token それぞれについて, Vocabulary における Index を並べた `LongTensor (batch_size, sequence_length)`
+- `inputs_embeds` : Embedding 結果を直接与える場合の `FloatTensor (batch_size, sequence_length, hidden_size)`
 
 のいずれかから `input_shape = (batch_size, sequence_length)` を決定します.
 
