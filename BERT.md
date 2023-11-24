@@ -70,7 +70,15 @@ https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models
         past_key_values_length = past_key_values[0][0].shape[2] if past_key_values is not None else 0
 ```
 
-#### attention_mask
+#### attention_mask の初期化
+
+`attention_mask` によって, Padding された部分 (系列の長さを一律にするために付け足された `[PAD]` のような Token) を無視しています.
+`attention_mask` は, 次のような `FloatTensor (batch_size, sequence_length)` です.
+
+- `attention_mask = 1` : 無視しない Token (**not masked**)
+- `attention_mask = 0` : 無視する Token (**masked**)
+
+> Mask to avoid performing attention on padding token indices. Mask values selected in [0, 1]
 
 `attention_mask (FloatTensor (batch_size, sequence_length))` が与えられていない場合, 全要素が1の `torch.Tensor (batch_size, seq_length)` で初期化します.
 `past_key_values` が 与えられていた場合, `past_key_values_length` > 0 となっているため, それだけ長くなります.
@@ -271,4 +279,3 @@ classDiagram
 
   Module <|-- BertPooler
 ```
-
