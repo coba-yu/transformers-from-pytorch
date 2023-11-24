@@ -39,7 +39,7 @@ https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models
 - `input_ids` : `torch.LongTensor (batch_size, sequence_length)`
 - `inputs_embeds` : `torch.FloatTensor (batch_size, sequence_length, hidden_size)`
 
-のいずれかから `input_shape = (batch_size, sequence_length)`　 を決定します.
+のいずれかから `input_shape = (batch_size, sequence_length)`　を決定します.
 
 ```python
         if input_ids is not None and inputs_embeds is not None:
