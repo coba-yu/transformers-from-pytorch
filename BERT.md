@@ -1,5 +1,7 @@
 # BERT
 
+## BertModel
+
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
@@ -52,11 +54,16 @@ class BertConfig(PretrainedConfig):
         position_embedding_type="absolute",
         use_cache=True,
         classifier_dropout=None,
+        **kwargs,
     ):
         # ...
 ```
 
 https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models/bert/configuration_bert.py#L143-L158
+
+### kwargs について
+
+[PretrainedConfig](https://huggingface.co/docs/transformers/v4.35.0/en/main_classes/configuration#transformers.PretrainedConfig) を参照してください.
 
 ## BertEmbeddings
 
