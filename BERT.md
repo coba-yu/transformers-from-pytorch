@@ -36,8 +36,10 @@ classDiagram
 
 https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models/bert/modeling_bert.py#L910-L1038
 
-- `input_ids` : `torch.LongTensor (batch_size, sequence_length)`
-- `inputs_embeds` : `torch.FloatTensor (batch_size, sequence_length, hidden_size)`
+#### input_shape
+
+- `input_ids` : `LongTensor (batch_size, sequence_length)`
+- `inputs_embeds` : `FloatTensor (batch_size, sequence_length, hidden_size)`
 
 のいずれかから `input_shape = (batch_size, sequence_length)` を決定します.
 
@@ -53,6 +55,29 @@ https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models
             raise ValueError("You have to specify either input_ids or inputs_embeds")
 
         batch_size, seq_length = input_shape
+```
+
+#### past_key_values
+
+`past_key_values` が与えられている場合, `past_key_values_length` を設定します.
+`past_key_values` は `FloatTensor (batch_size, num_heads, sequence_length - 1, embed_size_per_head)` の tuple で長さは `config.n_layers` で決まります.
+
+`past_key_values` (Attention Block の hidden states における計算済みの Key と Value) を使用することで Decoding の高速化が可能になるようです.
+
+> Contains precomputed key and value hidden states of the attention blocks. Can be used to speed up decoding.
+
+```python
+        past_key_values_length = past_key_values[0][0].shape[2] if past_key_values is not None else 0
+```
+
+#### attention_mask
+
+`attention_mask (FloatTensor (batch_size, sequence_length))` が与えられていない場合, 全要素が1の `torch.Tensor (batch_size, seq_length)` で初期化します.
+`past_key_values` が 与えられていた場合, `past_key_values_length` > 0 となっているため, それだけ長くなります.
+
+```python
+        if attention_mask is None:
+            attention_mask = torch.ones(((batch_size, seq_length + past_key_values_length)), device=device)
 ```
 
 ## BertConfig
