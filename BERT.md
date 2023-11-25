@@ -129,6 +129,22 @@ graph LR
 
 #### token_type_ids
 
+`token_type_ids` は, どの Sentence の Token かを区別するための `LongTensor (batch_size, sequence_length)` です.
+
+- `token_type_ids[i] = 0` : Sentence A の Token
+- `token_type_ids[i] = 1` : Sentence B の Token
+
+いくつかの Model では, 以下のように Sentence の Pair (例えば, 質問文と回答文) を入力としています.
+
+```
+[CLS] SEQUENCE_A [SEP] SEQUENCE_B [SEP]
+```
+
+cf. https://huggingface.co/docs/transformers/glossary#token-type-ids
+
+- BertEmbeddings が `token_type_ids` を持っていれば, 長さ `seq_length` だけ slice したものを使用します.
+- そうでなければ, 全要素 0 で初期化します.
+
 ```python
         if token_type_ids is None:
             if hasattr(self.embeddings, "token_type_ids"):
