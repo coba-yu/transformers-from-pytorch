@@ -1,5 +1,7 @@
 # BERT
 
+- `.BertModel` の `.` は `transformers` Package の root を表しています (つまり, `transformers.BertModel` ).
+
 ## BertModel
 
 ```mermaid
@@ -15,8 +17,8 @@ classDiagram
     +dict warnings_issued
     +GenerationConfig generation_config
   }
-  class BertPreTrainedModel[".models.bert.BertPreTrainedModel"]
-  class BertModel[".models.bert.BertModel"] {
+  class BertPreTrainedModel[".models.bert.modeling_bert.BertPreTrainedModel"]
+  class BertModel[".models.BertModel"] {
     +BertConfig config
     +BertEmbeddings embeddings
     +BertEncoder encoder
@@ -178,7 +180,7 @@ https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertEmbeddings[".models.bert.BertEmbeddings"] {
+  class BertEmbeddings[".models.bert.modeling_bert.BertEmbeddings"] {
     +torch.nn.Embedding word_embeddings
     +torch.nn.Embedding position_embeddings
     +torch.nn.Embedding token_type_embeddings
@@ -198,7 +200,7 @@ LayerNorm は Tensorflow の Checkpoint File から Model の変数を Load で�
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertEncoder[".models.bert.BertEncoder"] {
+  class BertEncoder[".models.bert.modeling_bert.BertEncoder"] {
     +BertConfig config
     +torch.nn.ModuleList~BertLayer~ layer
     +bool gradient_checkpointing
@@ -212,7 +214,7 @@ classDiagram
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertLayer[".models.bert.BertLayer"] {
+  class BertLayer[".models.bert.modeling_bert.BertLayer"] {
     +int chunk_size_feed_forward
     +int seq_len_dim
     +BertAttention attention
@@ -231,12 +233,12 @@ classDiagram
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertAttention[".models.bert.BertAttention"] {
+  class BertAttention[".models.bert.modeling_bert.BertAttention"] {
     +BertSelfAttention self
     +BertSelfOutput output
     +set pruned_heads 
   }
-  class BertSelfAttention[".models.bert.BertSelfAttention"] {
+  class BertSelfAttention[".models.bert.modeling_bert.BertSelfAttention"] {
     +int num_attention_heads
     +int attention_head_size
     +int all_head_size
@@ -247,7 +249,7 @@ classDiagram
     +str position_embedding_type
     +bool is_decoder
   }
-  class BertSelfOutput[".models.bert.BertSelfOutput"] {
+  class BertSelfOutput[".models.bert.modeling_bert.BertSelfOutput"] {
     +torch.nn.Linear dense
     +torch.nn.LayerNorm LayerNorm
     +torch.nn.Dropout dropout
@@ -297,7 +299,7 @@ flowchart LR
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertIntermediate[".models.bert.BertIntermediate"] {
+  class BertIntermediate[".models.bert.modeling_bert.BertIntermediate"] {
     +torch.nn.Linear dense
     +torch.nn.Module intermediate_act_fn
   }
@@ -310,7 +312,7 @@ classDiagram
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertOutput[".models.bert.BertOutput"] {
+  class BertOutput[".models.bert.modeling_bert.BertOutput"] {
     +torch.nn.Linear dense
     +torch.nn.LayerNorm LayerNorm
     +torch.nn.Dropout dropout
@@ -324,7 +326,7 @@ classDiagram
 ```mermaid
 classDiagram
   class Module["torch.nn.Module"]
-  class BertPooler[".models.bert.BertPooler"] {
+  class BertPooler[".models.bert.modeling_bert.BertPooler"] {
     +torch.nn.Linear dense
     +torch.nn.Tanh activation
   }
