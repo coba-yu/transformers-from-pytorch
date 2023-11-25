@@ -137,7 +137,13 @@ graph LR
 いくつかの Model では, 以下のように Sentence の Pair (例えば, 質問文と回答文) を入力としています.
 
 ```
-[CLS] SEQUENCE_A [SEP] SEQUENCE_B [SEP]
+[CLS] HuggingFace is based in NYC [SEP] Where is HuggingFace based? [SEP]
+```
+
+これに Token Type ID を割り当てると, 次のようになります.
+
+```
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
 cf. https://huggingface.co/docs/transformers/glossary#token-type-ids
