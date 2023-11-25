@@ -75,7 +75,7 @@ graph LR
   encoder_outs --> model_out
 ```
 
-#### input_shape
+#### input_ids, inputs_embeds, input_shape
 
 - `input_ids` : Sequence に含まれる Token それぞれについて, Vocabulary における Index を並べた `LongTensor (batch_size, sequence_length)`
 - `inputs_embeds` : Embedding 結果を直接与える場合の `FloatTensor (batch_size, sequence_length, hidden_size)`
