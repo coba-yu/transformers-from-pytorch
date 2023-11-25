@@ -1,6 +1,20 @@
 # BERT
 
-- `.BertModel` の `.` は `transformers` Package の root を表しています (つまり, `transformers.BertModel` ).
+`.BertModel` の `.` は `transformers` Package の root を表しています (つまり, `transformers.BertModel` ).
+
+関数の処理を表す Graph (Flowchart) では
+
+- 通常の長方形 Node : Layer (torch.nn.Module の subclass)
+- 角が丸くなった Node : 関数内の Local 変数 (var) -> Stadium-shaped というらしいです
+- より丸みを帯びた Node : 引数 (arg)
+
+とします.
+
+```mermaid
+graph LR
+  arg_1([arg_1]) --> layer1[Layer1] --> var(var_t) --> layer2[Layer2]
+  arg_2([arg_2]) --> layer1
+```
 
 ## BertModel
 
@@ -37,6 +51,29 @@ classDiagram
 ### forward()
 
 https://github.com/huggingface/transformers/blob/v4.35.0/src/transformers/models/bert/modeling_bert.py#L910-L1038
+
+```mermaid
+graph LR
+  input_ids([input_ids]) --> embs[BertEmbeddings] --> emb_out(embedding_<br>output)
+  position_ids([position_ids]) --> embs
+  token_type_ids([token_<br>type_ids]) --> embs
+  inputs_embeds([inputs_<br>embeds]) --> embs
+  past_key_values([past_<br>key_values]) --> past_key_values_length(past_<br>key_values_<br>length) --> embs
+
+  emb_out --> encoder[BertEncoder] --> encoder_outs(encoder_<br>outputs)
+  extended_attention_mask(extended_<br>attention_<br>mask) --> encoder
+  head_mask([head_mask]) --> encoder
+  encoder_hidden_states([encoder_<br>hidden_<br>states]) --> encoder
+  encoder_attention_mask([encoder_<br>attention_<br>mask]) --> encoder
+  past_key_values --> encoder
+  encoder_outs --> seq_out("sequence_output = <br> encoder_outputs[0]")
+
+  seq_out --> pooler[BertPooler] --> pool_out(pooled_<br>output)
+
+  seq_out --> model_out[BaseModelOutput<br>WithPooling<br>AndCrossAttentions]
+  pool_out --> model_out
+  encoder_outs --> model_out
+```
 
 #### input_shape
 
