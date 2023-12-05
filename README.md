@@ -1,4 +1,4 @@
-# transformers-from-pseudo-scratch
+# transformers-from-pytorch
 
 ## References
 
