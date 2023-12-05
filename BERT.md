@@ -254,6 +254,37 @@ LayerNorm は Tensorflow の Checkpoint File から Model の変数を Load で�
 
 > self.LayerNorm is not snake-cased to stick with TensorFlow model variable name and be able to load any TensorFlow checkpoint file
 
+### forward
+
+```mermaid
+graph LR
+  token_type_ids([token_<br>type_ids]) --> tt_embs[torch.nn.Embedding] --> tt_emb_out(token_type_<br>embeddings)
+  input_ids([input_ids]) --> in_emb[torch.nn.Embedding] --> emb_out(inputs_<br>embeds)
+  inputs_embeds([inputs_<br>embeds]) --> emb_out
+  position_ids([position_ids]) --> pos_emb[torch.nn.Embedding] --> pos_emb_out(position_embeddings)
+  emb_out --> add["+"] --> emb([embeddings])
+  tt_emb_out --> add["+"]
+  pos_emb_out --> add["+"]
+  past_key_values_length([past_<br>key_values_<br>length]) --> position_ids
+  emb --> LayerNorm[torch.nn.LayerNorm] --> dropout[torch.nn.Dropout]
+```
+
+#### token_type_ids
+
+> Setting the token_type_ids to the registered buffer in constructor where it is all zeros, which usually occurs
+> when its auto-generated, registered buffer helps users when tracing the model without passing token_type_ids, solves 
+> issue #5664
+
+```python
+        if token_type_ids is None:
+            if hasattr(self, "token_type_ids"):
+                buffered_token_type_ids = self.token_type_ids[:, :seq_length]
+                buffered_token_type_ids_expanded = buffered_token_type_ids.expand(input_shape[0], seq_length)
+                token_type_ids = buffered_token_type_ids_expanded
+            else:
+                token_type_ids = torch.zeros(input_shape, dtype=torch.long, device=self.position_ids.device)
+```
+
 ## BertEncoder
 
 ```mermaid
