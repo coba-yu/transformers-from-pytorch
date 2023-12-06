@@ -299,6 +299,12 @@ classDiagram
   Module <|-- BertEncoder
 ```
 
+### forward
+
+```mermaid
+graph LR
+```
+
 ## BertLayer
 
 ```mermaid
@@ -316,6 +322,50 @@ classDiagram
   }
 
   Module <|-- BertLayer
+```
+
+### forward
+
+#### Encoder (is_decoder = False)
+
+```mermaid
+graph LR
+  hidden_states([hidden_states]) --> attention[BertAttention] --> self_attention_outputs(self_<br>attention_<br>outputs)
+  attention_mask([attention_mask]) --> attention
+  head_mask([head_mask]) --> attention
+  past_key_value([past_key_<br>value]) --> attention
+  output_attentions([output_<br>attentions]) --> attention
+  self_attention_outputs --> attention_output("self_<br>attention_<br>outputs[0]")
+  attention_output --> intermediate[BertIntermediate] --> intermediate_output(intermediate_<br>output)
+  --> output[BertOutput] --> layer_output("layer_<br>output") --> concat
+  attention_output --> output
+  self_attention_outputs --> outputs("self_<br>attention_<br>outputs[1:]") --> concat
+```
+
+#### Decoder (is_decoder = True)
+
+cross-attention (source-target attention) が追加されます.
+
+```mermaid
+graph LR
+  attention_output("self_<br>attention_<br>outputs[0]") --> crossattention[BertAttention] --> cross_attention_outputs(cross_<br>attention_<br>outputs)
+  attention_mask([attention_mask]) --> crossattention
+  head_mask([head_mask]) --> crossattention
+  past_key_value([past_key_<br>value]) --> crossattention
+  output_attentions([output_<br>attentions]) --> crossattention
+
+  outputs("self_<br>attention_<br>outputs[1:-1]") --> concat
+
+  encoder_hidden_states([encoder_<br>hidden_<br>states]) --> crossattention
+  encoder_attention_mask([encoder_<br>attention_<br>mask]) --> crossattention
+  cross_attention_outputs --> cross_attention_output("cross_<br>attention_<br>outputs[0]")
+  cross_attention_outputs --> other_cross_attention_outputs("cross_<br>attention_<br>outputs[1:-1]") --> concat
+  cross_attention_output --> intermediate[BertIntermediate] --> intermediate_output(intermediate_<br>output)
+  --> output[BertOutput] --> layer_output("layer_<br>output") --> concat
+  cross_attention_output --> output
+  
+  cache_output("self_<br>attention_<br>outputs[-1]") --> present_key_value(present_key_value) --> add["+"] --> concat
+  cross_attention_outputs --> cross_attn_present_key_value("cross_<br>attention_<br>outputs[-1]") --> add["+"]
 ```
 
 ## BertAttention
